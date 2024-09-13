@@ -1,0 +1,40 @@
+name: Deploy Main Node App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    # env:
+    #     BINANCE_BASE_URL: https://fapi.binance.com/fapi/
+    #     BYBIT_BASE_URL: https://api.bybit.com
+    #     DB_URL: mongodb://0.0.0.0:27017/uat-olympus-new
+    #     ADMIN_LOGIN_PASS: iamadmin
+
+    steps:
+      # - name: Cleanup
+      #   run: |
+      #       sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # - name: Create .env file
+      #   run: |
+      #       echo "BINANCE_BASE_URL=${BINANCE_BASE_URL}" >> .env
+      #       echo "BYBIT_BASE_URL=${BYBIT_BASE_URL}" >> .env
+      #       echo "DB_URL=${DB_URL}" >> .env
+      #       echo "ADMIN_LOGIN_PASS=${ADMIN_LOGIN_PASS}" >> .env
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restart PM2
+        run: pm2 restart drive-assist-node
+
+      # Uncomment and modify the following if deploying to EC2 via SCP
+      # - name: Deploy to EC2
+      #   run: scp -i /path/to/your-key.pem -r ./build/* ec2-user@your-ec2-instance-ip:/path/to/your/app/folder
