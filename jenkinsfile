@@ -1,0 +1,22 @@
+pipeline {
+    agent any  
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'sudo npm install'
+                sh 'sudo npm install -g pm2'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'sudo pm2 start --name bass-ico-node npm -- start'
+                // sh 'sudo pm2 restart bass-ico-node'
+            }
+        }
+    }
+}
