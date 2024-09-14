@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: Restart PM2
-        run: pm2 restart ecosystem.config.js
+        run: pm2 restart './node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js'
         # run: pm2 restart node-express-swagger-node
 
       # Uncomment and modify the following if deploying to EC2 via SCP
